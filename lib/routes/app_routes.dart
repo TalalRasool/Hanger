@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:hanger/routes/routes_names.dart';
 import 'package:hanger/screens/ResetLinkSentScreen.dart';
+import 'package:hanger/screens/add_item_screen.dart';
 import 'package:hanger/screens/camera_screen.dart';
 import 'package:hanger/screens/edit_personal_info_screen.dart';
 import 'package:hanger/screens/forgot_password.dart';
@@ -59,7 +60,8 @@ GetPage(
       GetPage(name: AppRoutes.editpersonalinfo,
        page: () => const EditPersonalInfoScreen(),
        
-       )
+       ),
+       GetPage(name: AppRoutes.additem, page: () => const AddItemScreen())
      /*
     GetPage(
       name: AppRoutes.personal,

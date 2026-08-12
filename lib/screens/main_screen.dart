@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:hanger/constants/app_images.dart';
-import 'package:hanger/routes/routes_names.dart'; // Aapke AppImages ka path
-// import 'package:hanger/routes/routes_names.dart'; // Settings screen par jane ke liye lazmi hai
+import 'package:hanger/routes/routes_names.dart';
+// Apne assets aur routes ke path zaroor verify kar lijiye ga
+// import 'package:hanger/constants/app_images.dart'; 
+// import 'package:hanger/routes/routes_names.dart'; 
+// import 'package:hanger/screens/add_item_screen.dart'; 
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
 
-  // ✅ Menu Bottom Sheet Function
+  // Menu Bottom Sheet Function
   void _showMenuBottomSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -22,7 +24,6 @@ class MainScreen extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              // Close Icon
               Align(
                 alignment: Alignment.centerRight,
                 child: InkWell(
@@ -32,35 +33,28 @@ class MainScreen extends StatelessWidget {
               ),
               SizedBox(height: 10.h),
               
-              // Settings Option
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.settings_outlined, color: Colors.black),
                 title: Text("Settings", style: TextStyle(fontSize: 16.sp)),
                 onTap: () {
-                  Get.back(); // Pehle bottom sheet band karein
-                  // Get.toNamed(AppRoutes.settings); // ✅ Nayi Settings Screen par jane ka route
+                  Get.back(); 
+                  // Get.toNamed(AppRoutes.settings); 
                 },
               ),
               
-              // Help Option
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.help_outline, color: Colors.black),
                 title: Text("Help", style: TextStyle(fontSize: 16.sp)),
-                onTap: () {
-                  // Help logic yahan aayegi
-                },
+                onTap: () {},
               ),
               
-              // Logout Option
               ListTile(
                 contentPadding: EdgeInsets.zero,
                 leading: const Icon(Icons.logout, color: Colors.black),
                 title: Text("Logout", style: TextStyle(fontSize: 16.sp)),
-                onTap: () {
-                  Get.toNamed(AppRoutes.welcome);
-                },
+                onTap: () {},
               ),
             ],
           ),
@@ -84,11 +78,12 @@ class MainScreen extends StatelessWidget {
                   // Profile Image
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8.r),
-                    child: Image.asset(
-                      AppImages.main, 
+                    child: Container(
                       width: 50.w,
                       height: 50.h,
-                      fit: BoxFit.cover,
+                      color: Colors.grey.shade300,
+                      // Agar PNG image use karni ho toh yahan lagayein
+                      // child: Image.asset('assets/images/profile.png', fit: BoxFit.cover), 
                     ),
                   ),
                   SizedBox(width: 12.w),
@@ -99,49 +94,33 @@ class MainScreen extends StatelessWidget {
                     children: [
                       Text(
                         "Jamain Gordon",
-                        style: TextStyle(
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.black,
-                        ),
+                        style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500, color: Colors.black),
                       ),
                       Text(
                         "@Jamain",
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          color: Colors.grey.shade600,
-                        ),
+                        style: TextStyle(fontSize: 12.sp, color: Colors.grey.shade600),
                       ),
                     ],
                   ),
                   
                   const Spacer(), 
                   
-                  // Top Menu Icon - ✅ Tapping opens Bottom Sheet
+                  // Top Menu Icon
                   InkWell(
                     onTap: () => _showMenuBottomSheet(context),
-                    child: Icon(
-                      Icons.menu,
-                      size: 28.sp,
-                      color: Colors.black,
-                    ),
+                    child: Icon(Icons.menu, size: 28.sp, color: Colors.black),
                   ),
                 ],
               ),
             ),
 
-            // 2. Center Body
+            // 2. Center Body (Empty State for now)
             Expanded(
               child: Center(
                 child: Text(
                   "Don't leave us hanging.\nTap + to stock your closet.",
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16.sp,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    height: 1.5, 
-                  ),
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w400, color: Colors.black, height: 1.5),
                 ),
               ),
             ),
@@ -177,15 +156,21 @@ class MainScreen extends StatelessWidget {
                 onTap: () {},
                 child: Icon(Icons.search, size: 28.sp, color: Colors.black),
               ),
+              
+              // ✅ Nayi Screen (Add Item) par jane ka button
               InkWell(
-                onTap: () {},
+                onTap: () {
+                Get.toNamed(
+                  AppRoutes.additem
+                );
+                },
                 child: Icon(Icons.add_box_outlined, size: 28.sp, color: Colors.black),
               ),
+              
               InkWell(
                 onTap: () {},
                 child: Icon(Icons.local_offer_outlined, size: 28.sp, color: Colors.black),
               ),
-              // Bottom Nav Menu Icon - ✅ Tapping opens Bottom Sheet
               InkWell(
                 onTap: () => _showMenuBottomSheet(context),
                 child: Icon(Icons.menu, size: 28.sp, color: Colors.black),

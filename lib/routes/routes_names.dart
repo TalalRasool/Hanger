@@ -8,6 +8,9 @@ static const String resetLinkSent = '/ResetLinkSent';
 static const String mainScreen = '/mainScreen';
 static const String camera = '/camera';
 static const String setting= '/setting';
+static const String editpersonalinfo= '/editpersonalinfo';
+static const String additem= '/additem';
+
 
 
 }
