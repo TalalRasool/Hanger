@@ -3,7 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hanger/constants/app_icon.dart';
 import 'package:hanger/constants/app_images.dart';
-import 'package:hanger/routes/routes_names.dart';
+
+import 'package:hanger/screens/auth/auth_controller.dart';
 import 'package:hanger/weidgets/common/common_button.dart';
 
 class ForgetPassword extends StatefulWidget {
@@ -14,7 +15,11 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
+  final _formKey = GlobalKey<FormState>();
+
   late final TextEditingController _emailController;
+
+  final AuthController _authController = Get.put(AuthController());
 
   @override
   void initState() {
@@ -36,90 +41,112 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 20.w),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center, 
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(top: 15.h),
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: InkWell(
-                          onTap: () {
-                            Get.back();
-                          },
-                          child: Icon(AppIcon.backArrow),
+            child: Form( // Column ko Form me wrap kiya
+              key: _formKey,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: 15.h),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: InkWell(
+                            onTap: () {
+                              Get.back();
+                            },
+                            child: Icon(AppIcon.backArrow),
+                          ),
                         ),
-                      ),
-                      Image.asset(
-                        AppImages.container,
-                        height: 25.h,
-                      ),
-                    ],
-                  ),
-                ),
-
-                SizedBox(height: 120.h), 
-
-                Text(
-                  "LOCKED OUT OF THE CLOSET?",
-                  style: TextStyle(
-                    fontSize: 18.sp,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.5,
-                  ),
-                ),
-                
-                SizedBox(height: 15.h),
-
-                Text(
-                  "Don't get your knickers in a twist.\nEnter your email below, and we'll help\nyou iron this out.",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 15.sp,
-                    fontWeight: FontWeight.w400,
-                    height: 1.4, 
-                  ),
-                ),
-
-                SizedBox(height: 120.h),
-
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 10.w),
-                  child: TextField(
-                    controller: _emailController,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      hintText: "Email address",
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                        fontWeight: FontWeight.w400,
-                      ),
-                      enabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1),
-                      ),
-                      focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Colors.black, width: 1.5),
-                      ),
+                        Image.asset(
+                          AppImages.container,
+                          height: 25.h,
+                        ),
+                      ],
                     ),
                   ),
-                ),
 
-                SizedBox(height: 30.h),
+                  SizedBox(height: 120.h),
 
-                commonButton(
-                  text: "Send the Thread",
-                  color: const Color(0xFF1C140C),
-                  width: double.infinity, 
-                  onPressed: () {
-                    Get.toNamed(AppRoutes.resetLinkSent, arguments: _emailController.text);
-                  }
-                ),
+                  Text(
+                    "LOCKED OUT OF THE CLOSET?",
+                    style: TextStyle(
+                      fontSize: 18.sp,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.5,
+                    ),
+                  ),
 
-                SizedBox(height: 40.h), 
-              ],
+                  SizedBox(height: 15.h),
+
+                  Text(
+                    "Don't get your knickers in a twist.\nEnter your email below, and we'll help\nyou iron this out.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      fontWeight: FontWeight.w400,
+                      height: 1.4,
+                    ),
+                  ),
+
+                  SizedBox(height: 120.h),
+
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    child: TextFormField( 
+                      controller: _emailController,
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: const InputDecoration(
+                        hintText: "Email address",
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                          fontWeight: FontWeight.w400,
+                        ),
+                        enabledBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 1),
+                        ),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black, width: 1.5),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your email';
+                        }
+                        if (!GetUtils.isEmail(value)) {
+                          return 'Please enter a valid email address';
+                        }
+                        return null;
+                      },
+                    ),
+                  ),
+
+                  SizedBox(height: 30.h),
+
+                  Obx(
+                    () => commonButton(
+                      text: _authController.isLoading.value
+                          ? "sending..."
+                          : "Send the Thread",
+                      color: const Color(0xFF1C140C),
+                      width: double.infinity,
+                      onPressed: () {
+                        if (_authController.isLoading.value) return;
+
+                        if (_formKey.currentState!.validate()) {
+                          _authController.forgetPassword(
+                            _emailController.text.trim(),
+                          );
+                        }
+                      },
+                    ),
+                  ),
+
+                  SizedBox(height: 40.h),
+                ],
+              ),
             ),
           ),
         ),

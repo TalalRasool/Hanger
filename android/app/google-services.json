@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "341950453724",
+    "project_id": "hanger-e3499",
+    "storage_bucket": "hanger-e3499.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341950453724:android:a65856c0b197874d91a119",
+        "android_client_info": {
+          "package_name": "com.example.hanger"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXFBpuEZ11ww4mQHmWfZ9WygDTbdtvUgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
